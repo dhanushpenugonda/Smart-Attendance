@@ -1,0 +1,22 @@
+<a href="<%= data.url %>" >
+<div class="card report third-color">
+    <div class="card-body">
+        <p class="card-text">
+            <%= data.course_name %><br>
+            <small class="text-muted"><%= data.name %></small>
+        </p>
+        <div class="card course fourth-color">
+            <div class="card-body">
+                <p class="card-text">Percentage</p>
+                <h5 class="card-title"><%= data.percentage %>%</h5>
+            </div>
+        </div>
+        <div class="card course fourth-color">
+            <div class="card-body">
+                <p class="card-text">Total hours</p>
+                <h5 class="card-title"><%= data.total %></h5>
+            </div>
+        </div>
+    </div>
+</div>
+</a>
