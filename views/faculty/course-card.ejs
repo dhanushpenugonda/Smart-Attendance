@@ -1,0 +1,29 @@
+<a href=<%= data.url %> style = "text-decoration: none; color: black;">
+<div class="card-deck first-color">
+    <h3><%= data.course_id %></h3>
+    <div class="card attendance third-color">
+        <div class="card-body">
+            <p class="card-text">Course Name</p>
+            <h5 class="card-title"><%= data.course_name %></h5>
+        </div>
+    </div>
+    <div class="card attendance third-color">
+        <div class="card-body">
+            <p class="card-text">Number of Students</p>
+            <h5 class="card-title"><%= data.students %></h5>
+        </div>
+    </div>
+    <div class="card attendance third-color">
+        <div class="card-body">
+            <p class="card-text">Number of classes taken</p>
+            <h5 class="card-title"><%= data.hours_left %></h5>
+        </div>
+    </div>
+    <div class="card attendance third-color">
+        <div class="card-body">
+            <p class="card-text">Academic Branch</p>
+            <h5 class="card-title">CSE</h5>
+        </div>
+    </div>
+</div>
+</a>

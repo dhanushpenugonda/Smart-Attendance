@@ -1,8 +1,131 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Home</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Smart Attandance</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+    <style>
+    .attendance{
+        display: inline-block;
+        width: 22%;
+        margin: 1%;
+    }
+    .chart-wrapper {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
+    section{
+        padding: 5rem 0;
+    }
+    </style>
 </head>
-<body>
-    <%= user %>
+    
+<body id="page-top">
+    <%- include('header', {user: user}) %>
+    <div class="container-fluid p-0 mb-5">
+        <img class="w-100" src="https://assets.telegraphindia.com/telegraph/2023/Jan/1674204821_main-tt.jpg" alt="Image">
+        <div class="carousel-caption d-flex align-items-center">
+            <div class="col-10 col-lg-7 text-center text-lg-start">
+                <h1 class="text-justify">Welcome back, <%= user %></h1>
+                <!-- <a href="" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a> -->
+            </div>
+        </div>
+    </div>
+    <section id ="create_attendance">
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+                <div class="col-12 col-lg-5">
+                    <h2 class="display-4 lh-1 mb-4">Create Attandance Link</h2>
+                    <p class="lead fw-normal text-muted mb-5 mb-lg-0">Fill the details</p>
+                </div>
+                <div class="col-sm-8 col-md-6">
+                    <form class="row g-3">
+        
+                        <div class="col-md-12 form-group">
+                            <label for="Course_ID" class="form-label" >Course ID</label>
+
+                            <select class="form-control" id="Course_ID" type="button">
+                                <option value="19cse311">19cse311</option>
+                                <option value="19cse312">19cse312</option>
+                                <option value="19cse313">19cse313</option>
+                                <option value="19cse314">19cse314</option>
+                                </select>
+                            
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">Slot</label>
+                            <input type="number" class="form-control" id="slot">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="view_attendance"  class="bg-light"> 
+        <h1><p class="ms-1 navbar-brand fw-bold" style="padding-left: 3em;">Attendance Summary</p></h1>
+        <div class="container" style="padding: 1em;">
+            <% for(var i=0; i < courses.length; i++) { %>
+                <%- include('course-card', {data: courses[i]}); %>
+            <% } %>
+        </div>
+    </section> 
+    <section id ="view_od" >
+        <div class="container px-5">
+            <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
+                <div class="col-12 col-lg-5">
+                    <h1><p class="ms-1 navbar-brand fw-bold" >View OD Requests</p></h1>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Roll Number</th>
+                        <th scope="col">Course ID</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Slot</th>
+                        <th scope="col">Approve</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="col">Ajay</td>
+                            <td scope="col">cb.en.u4cse20203</td>
+                            <td scope="col">19cse313</td>
+                            <td scope="col">Medical</td>
+                            <td scope="col">19/3/2202</td>
+                            <td scope="col">4</td>
+                            <td scope="col">
+                                <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <%- include('footer') %>
 </body>
 </html>

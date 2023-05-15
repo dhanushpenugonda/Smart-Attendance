@@ -18,7 +18,7 @@
                 position: relative;
                 width: 100%;
             }
-            /* .carousel-item{position:relative;display:none;float:left;width:100%;margin-right:-100%;backface-visibility:hidden;transition:transform .6s ease-in-out}@media (prefers-reduced-motion: reduce){.carousel-item{transition:none}}.carousel-item.active,.carousel-item-next,.carousel-item-prev{display:block}.carousel-item-next:not(.carousel-item-start),.active.carousel-item-end{transform:translateX(100%)}.carousel-item-prev:not(.carousel-item-end),.active.carousel-item-start{transform:translateX(-100%)}.carousel-fade .carousel-item{opacity:0;transition-property:opacity;transform:none}.carousel-fade .carousel-item.active,.carousel-fade .carousel-item-next.carousel-item-start,.carousel-fade .carousel-item-prev.carousel-item-end{z-index:1;opacity:1}.carousel-fade .active.carousel-item-start,.carousel-fade .active.carousel-item-end{z-index:0;opacity:0;transition:opacity 0s .6s}@media (prefers-reduced-motion: reduce){.carousel-fade .active.carousel-item-start,.carousel-fade .active.carousel-item-end{transition:none}}
+            .carousel-item{position:relative;display:none;float:left;width:100%;margin-right:-100%;backface-visibility:hidden;transition:transform .6s ease-in-out}@media (prefers-reduced-motion: reduce){.carousel-item{transition:none}}.carousel-item.active,.carousel-item-next,.carousel-item-prev{display:block}.carousel-item-next:not(.carousel-item-start),.active.carousel-item-end{transform:translateX(100%)}.carousel-item-prev:not(.carousel-item-end),.active.carousel-item-start{transform:translateX(-100%)}.carousel-fade .carousel-item{opacity:0;transition-property:opacity;transform:none}.carousel-fade .carousel-item.active,.carousel-fade .carousel-item-next.carousel-item-start,.carousel-fade .carousel-item-prev.carousel-item-end{z-index:1;opacity:1}.carousel-fade .active.carousel-item-start,.carousel-fade .active.carousel-item-end{z-index:0;opacity:0;transition:opacity 0s .6s}@media (prefers-reduced-motion: reduce){.carousel-fade .active.carousel-item-start,.carousel-fade .active.carousel-item-end{transition:none}}
             .container,.container-fluid,.container-sm,.container-md,.container-lg,.container-xl,.container-xxl{width:100%;padding-right:var(--bs-gutter-x, .75rem);padding-left:var(--bs-gutter-x, .75rem);margin-right:auto;margin-left:auto}@media (min-width: 576px){.container,.container-sm{max-width:540px}}@media (min-width: 768px){.container,.container-sm,.container-md{max-width:720px}}@media (min-width: 992px){.container,.container-sm,.container-md,.container-lg{max-width:960px}}@media (min-width: 1200px){.container,.container-sm,.container-md,.container-lg,.container-xl{max-width:1140px}}@media (min-width: 1400px){.container,.container-sm,.container-md,.container-lg,.container-xl,.container-xxl{max-width:1320px}}
             .carousel-inner {
                 position:relative;
@@ -29,9 +29,9 @@
                 display:block;
                 clear:both;
                 content:"";
-            } */
+            }
             section{
-                padding: 5rem 0;
+                padding: 2rem 0;
             }
         </style>
     </head>
@@ -48,6 +48,14 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="container-fluid p-0 mb-5 bg-primary" style="background-color: black;">
+            <img class="w-100" src="https://anokha.amrita.edu/static/media/cbe%20campus.d9a4776816481bca719660885300bd37.svg">
+            <div class = > 
+                <h2 class = "text-justify">You have Attandance to give</h2>
+                <a href="#" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a>
+            </div>
+        </div> -->
+
 
         <section id="attendance"> 
             <h1><p class="ms-1 navbar-brand fw-bold" style="padding-left: 4em;">Attendance Summary</p></h1>
@@ -57,7 +65,7 @@
                     <h3>Click to know more</h3>
                     </div>
                     <div class="col">
-                        <div class="chart-wrappe">
+                        <div class="chart-wrapper">
                             <canvas id = "pieChart"> </canvas>
                         </div>
                     </div>
@@ -76,32 +84,27 @@
                     <div class="col-sm-8 col-md-6">
                         <form class="row g-3">
                             <div class="col-12">
-                                <label for="inputAddress" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name">
-                              </div>
-                            <div class="col-md-6">
-                                <label for="inputEmail4" class="form-label">Roll Number</label>
-                                <input type="text" class="form-control" id="roll">
-                              </div>
-                              <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Course ID</label>
-                                <input type="text" class="form-control" id="cid">
-                              </div>
-
-                            <div class="col-12">
-                              <label for="inputAddress" class="form-label">Reason</label>
-                              <input type="text" class="form-control" id="reason">
+                                <label for="course" class="form-label">Course ID</label>
+                                <select class="form-select" name="course" id="cars">
+                                <% for(var i=0; i < courses.length; i++) { %>
+                                    <option value="volvo"><%= courses[i].course_id %></option>
+                                <% } %>
+                                </select>
                             </div>
                             <div class="col-12">
-                              <label for="inputAddress2" class="form-label">Date</label>
-                              <input type="date" class="form-control" id="date">
+                                <label for="reason" class="form-label">Reason</label>
+                                <input type="text" class="form-control" name="reason" id="reason">
+                            </div>
+                            <div class="col-12">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" name="date" id="date">
                             </div>
                             <div class="col-md-6">
-                              <label for="inputCity" class="form-label">Slot</label>
-                              <input type="number" class="form-control" id="slot">
+                                <label for="slot" class="form-label">Slot</label>
+                                <input type="number" class="form-control" name="slot" id="slot">
                             </div>
                             <div class="col-12">
-                              <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -119,7 +122,7 @@
                   datasets: [{
                      backgroundColor: ["blue", "red"],
                      borderWidth: 10,
-                     data: [455, 240]
+                     data: ['<%= absent %>', '<%= present %>']
                   }]
                },
             });
