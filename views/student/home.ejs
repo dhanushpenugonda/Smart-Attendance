@@ -41,10 +41,10 @@
 
         <div class="container-fluid p-0 mb-5">
             <img class="w-100" src="https://assets.telegraphindia.com/telegraph/2023/Jan/1674204821_main-tt.jpg" alt="Image">
-            <div class="carousel-caption d-flex align-items-center">
+            <div class="carousel-caption d-flex align-items-center" style="margin: 0 0 -10em;">
                 <div class="col-10 col-lg-7 text-center text-lg-start">
                     <h1 class="text-justify">You have Attandance to give</h1>
-                    <a href="" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a>
+                    <a href="/student/portal" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a>
                 </div>
             </div>
         </div>
@@ -59,10 +59,16 @@
 
         <section id="attendance"> 
             <h1><p class="ms-1 navbar-brand fw-bold" style="padding-left: 4em;">Attendance Summary</p></h1>
-            <div class="container" style="padding: 5em;">
-                <div class="row">
-                    <div class="col">
-                    <a href="/student/attendance"><h3>Click to know more</h3></a>
+            <div class="container" style="padding: 0 4em 3em;">
+                <div class="row" >
+                    <div class="col" style = "margin: 2em 0;">
+                    <p class = "text-justify" style="font-size: 20px;">
+                        Please make sure to maintain good attendance because it demonstrates responsibility and 
+                        reliability, and it is a key factor in academic and professional success.
+                        Consistently attending classes or work shows that you value your commitments
+                        and are willing to put in the effort to achieve your goals.
+                    </p>
+                    <a href="/student/attendance"><h4>Check how responsibile you are...</h4></a>
                     </div>
                     <div class="col">
                         <div class="chart-wrapper">
@@ -79,7 +85,7 @@
                 <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
                     <div class="col-12 col-lg-5">
                         <h2 class="display-4 lh-1 mb-4">OD section</h2>
-                        <p class="lead fw-normal text-muted mb-5 mb-lg-0">enter any thing</p>
+                        <!-- <p class="lead fw-normal text-muted mb-5 mb-lg-0">enter any thing</p> -->
                     </div>
                     <div class="col-sm-8 col-md-6">
                         <form class="row g-3">
@@ -120,7 +126,7 @@
                data: {
                   labels: ["Absent", "Present"],
                   datasets: [{
-                     backgroundColor: ["blue", "red"],
+                     backgroundColor: ["red", "green"],
                      borderWidth: 10,
                      data: ['<%= absent %>', '<%= present %>']
                   }]

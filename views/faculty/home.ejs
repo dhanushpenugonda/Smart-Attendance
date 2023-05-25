@@ -33,7 +33,7 @@
     <%- include('header', {user: user}) %>
     <div class="container-fluid p-0 mb-5">
         <img class="w-100" src="https://assets.telegraphindia.com/telegraph/2023/Jan/1674204821_main-tt.jpg" alt="Image">
-        <div class="carousel-caption d-flex align-items-center">
+        <div class="carousel-caption d-flex align-items-center" style="margin: 0 0 -8em;">
             <div class="col-10 col-lg-7 text-center text-lg-start">
                 <h1 class="text-justify">Welcome back, <%= user %></h1>
                 <!-- <a href="" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a> -->
@@ -44,34 +44,35 @@
         <div class="container px-5">
             <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
                 <div class="col-12 col-lg-5">
-                    <h2 class="display-4 lh-1 mb-4">Create Attandance Link</h2>
+                    <h2 class="display-4 lh-1 mb-4">Create Attandance Portal</h2>
                     <p class="lead fw-normal text-muted mb-5 mb-lg-0">Fill the details</p>
                 </div>
                 <div class="col-sm-8 col-md-6">
-                    <form class="row g-3">
-        
+                    <form class="row g-3" action = "/faculty/createattendance" method="POST">
                         <div class="col-md-12 form-group">
-                            <label for="Course_ID" class="form-label" >Course ID</label>
+                            <label for="course_id" class="form-label" >Course ID</label>
 
-                            <select class="form-control" id="Course_ID" type="button">
+                            <select class="form-control" name = "course_id" type="button">
                                 <% for(var i=0; i < courses.length; i++) { %>
                                     <option value=<%= courses[i].course_id %>><%= courses[i].course_id %></option>
                                 <% } %>
                                 </select>
                             
                         </div>
-
-
-                        <div class="col-12">
-                            <label for="inputAddress2" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="date">
-                        </div>
                         <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Slot</label>
-                            <input type="number" class="form-control" id="slot">
+                            <label for="slot" class="form-label">Slot</label>
+                            <input type="number" name = "slot" class="form-control" id="slot">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="exp_time" class="form-label" >Exp time</label>
+                            <select class="form-control" name = "exp_time" type="button">
+                                <option value="10">10</option>
+                                <option value="10">15</option>
+                                <option value="10">20</option>
+                            </select>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure, you want to create the link?');">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -79,7 +80,7 @@
         </div>
     </section>
 
-    <section id="view_attendance"  class="bg-light"> 
+    <section id="view_attendance" class="bg-light"> 
         <h1><p class="ms-1 navbar-brand fw-bold" style="padding-left: 3em;">Attendance Summary</p></h1>
         <div class="container" style="padding: 1em;">
             <% for(var i=0; i < courses.length; i++) { %>
@@ -108,8 +109,8 @@
                     <tbody>
                         <tr>
                             <td scope="col">Ajay</td>
-                            <td scope="col">cb.en.u4cse20203</td>
-                            <td scope="col">19cse313</td>
+                            <td scope="col">CB.EN.U4CSE20203</td>
+                            <td scope="col">19313</td>
                             <td scope="col">Medical</td>
                             <td scope="col">19/3/2202</td>
                             <td scope="col">4</td>
