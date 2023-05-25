@@ -1,0 +1,21 @@
+<div class="card report third-color">
+    <div class="card-body">
+        <p class="card-text">
+            <b><%= data.course_name %></b><br>
+            <small class="text-muted"><%= data.name %></small>
+        </p>
+        <div class="card course first-color">
+            <div class="card-body">
+                <p class="card-text">Percentage</p>
+                <!-- <h5 class="card-title"><%= data.percentage %>%</h5> -->
+                <div class="pie" style="--p:<%= data.percentage %>"><%= data.percentage %>%</div>
+            </div>
+        </div>
+        <div class="card course first-color">
+            <div class="card-body">
+                <p class="card-text">Total hours</p>
+                <h5 class="card-title"><%= data.total %></h5>
+            </div>
+        </div>
+    </div>
+</div>

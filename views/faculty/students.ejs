@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../css/style.css">
     <style>
     .table{
-        margin: 5% 15% 10%;
-        width: 70%;
+        margin: 5% 5% 2%;
+        width: 90%;
     }
     body{
         padding-top: 5%;
@@ -41,39 +41,45 @@
     <h1><%= course_id %></h1>
     <h2>Date: <%= date_time %></h2>
     <h2>Slot: <%= slot %></h2>
-    <table class="table table-striped table-light border-dark">
-        <thead class="table-dark">
-        <tr>
-            <th scope="col">Roll No</th>
-            <th scope="col">Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% for(var i=0; i < result.length; i++) { %>
+    <form action=<%= url %> method="POST">
+        <table class="table table-striped table-light border-dark">
+            <thead class="table-dark">
             <tr>
-                <th scope="row"><%= result[i].roll_no %></th>
-                <td><select class="form-select">
-                    <% if(result[i].status == "Present"){ %>
-                        <option value="Present" selected>Present</option>
-                    <% } else{ %>
-                        <option value="Present">Present</option>
-                    <% } %>
-                    <% if(result[i].status == "Absent"){ %>
-                        <option value="Absent" selected>Absent</option>
-                    <% } else{ %>
-                        <option value="Absent">Absent</option>
-                    <% } %>
-                    <% if(result[i].status == "OD"){ %>
-                        <option value="OD" selected>OD</option>
-                    <% } else{ %>
-                        <option value="OD">OD</option>
-                    <% } %>
-                  </select></td>
+                <th scope="col">Roll No</th>
+                <th scope="col">Status</th>
             </tr>
-        <% } %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <% for(var i=0; i < result.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= result[i].roll_no %></th>
+                    <td>
+                        <select class="form-select" name=<%= result[i].roll_no %>>
+                        <% if(result[i].status == "Present"){ %>
+                            <option value="Present" selected>Present</option>
+                        <% } else{ %>
+                            <option value="Present">Present</option>
+                        <% } %>
+                        <% if(result[i].status == "Absent"){ %>
+                            <option value="Absent" selected>Absent</option>
+                        <% } else{ %>
+                            <option value="Absent">Absent</option>
+                        <% } %>
+                        <% if(result[i].status == "OD"){ %>
+                            <option value="OD" selected>OD</option>
+                        <% } else{ %>
+                            <option value="OD">OD</option>
+                        <% } %>
+                        </select>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
     </div>
     <%- include('footer') %>
   </body>
 </html>
+

@@ -62,7 +62,7 @@
             <div class="container" style="padding: 5em;">
                 <div class="row">
                     <div class="col">
-                    <h3>Click to know more</h3>
+                    <a href="/student/attendance"><h3>Click to know more</h3></a>
                     </div>
                     <div class="col">
                         <div class="chart-wrapper">
@@ -87,7 +87,7 @@
                                 <label for="course" class="form-label">Course ID</label>
                                 <select class="form-select" name="course" id="cars">
                                 <% for(var i=0; i < courses.length; i++) { %>
-                                    <option value="volvo"><%= courses[i].course_id %></option>
+                                    <option value=<%= courses[i].course_id %>><%= courses[i].course_id %></option>
                                 <% } %>
                                 </select>
                             </div>

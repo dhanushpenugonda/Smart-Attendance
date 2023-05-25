@@ -11,10 +11,10 @@
         margin: 10% 15%;
         width: 70%;
     }
-    tr td a{
+    /* tr td a{
         text-decoration: none;
         color: black;
-    }
+    } */
     </style>
   </head>
   <body class="second-color">
@@ -27,13 +27,15 @@
         <tr>
             <th scope="col">Date</th>
             <th scope="col">Slot</th>
+            <th scope="col"> - </th>
         </tr>
         </thead>
         <tbody>
         <% for(var i=0; i < result.length; i++) { %>
             <tr>
-                <td><a href=<%= result[i].url %>><%= result[i].date_time %></a></td>
-                <td><a href=<%= result[i].url %>><%= result[i].slot %></a></td>
+                <td><%= result[i].date_time %></td>
+                <td><%= result[i].slot %></td>
+                <td><a href=<%= result[i].url %>>View</td>
             </tr>
         <% } %>
         </tbody>

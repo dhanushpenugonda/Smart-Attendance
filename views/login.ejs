@@ -1,95 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Login Page</title>
-	<link rel="stylesheet" href="css/style.css">
-    <style>
-        .login-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f2f2f2;
-        }
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/util.css"> 
+	<link rel="stylesheet" type="text/css" href="css/main.css"> 
 
-        h1 {
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        select {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        button[type="submit"] {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
-<body>
-	<div class="login-container">
-		<h1>Login</h1>
-		<form id="login-form" action="/login" method="POST" onsubmit="return validation()">
-			<label for="username">Username:</label>
-			<input type="text" id="username" name="username" placeholder="Enter your username" required>
+<body style="background-color: #666666;">
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				
+				<form class="login100-form validate-form" action="/login" method="POST" onsubmit="return validation()">
+					<span class="login100-form-title p-b-43">
+						Login
+					</span>
+					
+					
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="username" placeholder="Username">
+						<!-- <span class="focus-input100"></span>
+						<span class="label-input100">Username</span> -->
+					</div>
+					
+					
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="password" name="password" placeholder="Password">
+						<!-- <span class="focus-input100"></span>
+						<span class="label-input100">Password</span> -->
+					</div>
+					
+					<!-- <div class="wrap-input100 validate-input" data-validate="User type is required"> -->
+						<select class="validate-input input100" name="user-type" style="height: 80px;vertical-align: center;border: 1px solid #e6e6e6; border-radius: 10px;">
+							<!-- <option value="" selected disabled> User Type</option> -->
+							<option value="student">Student</option>
+				            <option value="faculty">Faculty</option>
+                            <option value="parent">Parent</option>
+                            <option value="admin">Admin</option>
+						</select>
+						<!-- <span class="focus-input100"></span> -->
+						
+					<!-- </div> -->
+					
+					
 
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" placeholder="Enter your password" required>
+					<div class="flex-sb-m w-full p-t-3 p-b-32">
+						<div>
+							<a href="#" class="txt1">
+								Forgot Password?
+							</a>
+						</div>
+					</div>
+			
 
-			<label for="user-type">User Type:</label>
-			<select id="user-type" name="user-type">
-				<option value="student">Student</option>
-				<option value="faculty">Faculty</option>
-                <option value="parent">Parent</option>
-                <option value="admin">Admin</option>
-            </select>
-			<button type="submit">Login</button>
-		</form>
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn">
+							Login
+						</button>
+					</div>
+				</form>
+
+				<div class="login100-more" style="background-image: url('https://wpvip.edutopia.org/wp-content/uploads/2022/10/iStock-1045325476.jpg');">
+				
+                <!-- <div class="login100-more" style="background-image: url('https://www.verywellfamily.com/thmb/JJKt8lUPR1W_2GEdLZRX_r0kQr0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Getty_first_grade_class_students_raising_hands_smiling_LARGE_Christopher-Futcher-574b53845f9b5851654693f2.jpg');"> -->
+				</div>
+			</div>
+		</div>
 	</div>
+	
+	
 
-	<script src="script.js">
-        function validation(){
-            var user = document.getElementsByName("username")[0];
-            let pwd = document.getElementsByName("password")[0];
-            var pstr = pwd.value.trim();
-            if(user.value.trim()==""){
-                window.alert("Blank Username");
-                return false;
-            }
-            else if(pwd.value.trim()==""){
-                window.alert("Blank Password")
-                return false;
-            }
-            else if(pstr.length<5){
-                document.getElementById("invalidPass").style.visibility="visible";
-                return false;
-            }
-        }
-    </script>
+	
+	
+
+<script>
+	function validation(){
+		var user = document.getElementsByName("username")[0];
+		let pwd = document.getElementsByName("password")[0];
+		var pstr = pwd.value.trim();
+		if(user.value.trim()==""){
+			window.alert("Blank Username");
+			return false;
+		}
+		else if(pwd.value.trim()==""){
+			window.alert("Blank Password")
+			return false;
+		}
+		else if(pstr.length<5){
+			document.getElementById("invalidPass").style.visibility="visible";
+			return false;
+		}
+	}
+</script>
+
 </body>
 </html>
-

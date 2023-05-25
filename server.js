@@ -51,7 +51,7 @@ const port = 3000;
 
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port ${port}`);
 });
 
 
@@ -69,18 +69,18 @@ app.listen(port, () => {
 // });
 
 // let dateTime = date_time();
-// sql = 'INSERT INTO `attendance`(`course_id`, `date_time`, `slot`, `exp_time`) VALUES ("B.Tech..2020.R.CSE.3.19CSE313","'+dateTime+'","7","10")';
+// sql = 'INSERT INTO attendance(course_id, date_time, slot, exp_time) VALUES ("B.Tech..2020.R.CSE.3.19CSE313","'+dateTime+'","7","10")';
 // query = db.query(sql, (err, result) => {
 //     if(err) throw err;
 //     // console.log(result);
 // });
 
-// sql = "SELECT roll_no FROM `coursetostudent` WHERE course_id = 'B.Tech..2020.R.CSE.3.19CSE314'";
+// sql = "SELECT roll_no FROM coursetostudent WHERE course_id = 'B.Tech..2020.R.CSE.3.19CSE314'";
 // query = db.query(sql, (err, result) => {
 //     if(err) throw err;
 //     // console.log(result);
 //     for(i in result){
-//         sql1 = "INSERT INTO `student_attendance`(`roll_no`, `course_id`, `date_time`, `status`) VALUES ('"+result[i].roll_no+"','B.Tech..2020.R.CSE.3.19CSE313','"+dateTime+"','Present')";
+//         sql1 = "INSERT INTO student_attendance(roll_no, course_id, date_time, status) VALUES ('"+result[i].roll_no+"','B.Tech..2020.R.CSE.3.19CSE313','"+dateTime+"','Present')";
 //         query1 = db.query(sql1, (err, result) => {
 //             if(err) throw err;
 //             // console.log(result);
@@ -103,7 +103,7 @@ app.get('/student', async (req, res) => {
         // console.log(result);
         courses = result;
     });
-    while(courses.length == 0) await sleep(1000);
+    while(courses.length == 0) await sleep(100);
     sql = 'SELECT * FROM student_attendance WHERE roll_no = "'+username+'"';
     query = db.query(sql, (err, result) => {
         if(err) throw err;
@@ -147,7 +147,7 @@ app.get('/student/attendance', (req, res) => {
                 courses.push(obj);
             });
         }
-        while(courses.length < result.length) await sleep(1000);
+        while(courses.length < result.length) await sleep(100);
         // console.log(courses);
         var total = 0;
         var boo = true;
@@ -163,7 +163,7 @@ app.get('/student/attendance', (req, res) => {
             }
             boo = false
         });
-        while(boo) await sleep(1000);
+        while(boo) await sleep(100);
         res.render("student/attendance",{user: user, courses: courses, total: total, present: present, absent: absent});
     });
 });
@@ -182,10 +182,10 @@ app.get("/student/report/:course_id", (req,res) =>{
 
 // --------------------------------------Faculty--------------------------------------------------------
 app.get('/faculty', (req, res) => {
-    let user = sessionstorage.getItem("user");
-    let username = sessionstorage.getItem("username");
-    // let user = "Radhika N";
-    // let username = "n_radhika";
+    // let user = sessionstorage.getItem("user");
+    // let username = sessionstorage.getItem("username");
+    let user = "Radhika N";
+    let username = "n_radhika";
     let courses = []
     let sql = 'SELECT * FROM course WHERE faculty_id = "'+username+'"';
     let query = db.query(sql, async (err,result) => {
@@ -207,7 +207,7 @@ app.get('/faculty', (req, res) => {
                 // console.log(res.length);
                 hours_left = res.length;
             });
-            while(hours_left==-1 || students==-1) await sleep(1000);
+            while(hours_left==-1 || students==-1) await sleep(100);
             courses.push({
                 url: '/faculty/'+result[i].course_id,
                 course_id: result[i].course_id,
@@ -217,18 +217,18 @@ app.get('/faculty', (req, res) => {
             });
 
         }
-        while(courses.length < result.length) await sleep(1000);
-        console.log(courses)
+        while(courses.length < result.length) await sleep(100);
+        // console.log(courses);
         res.render("faculty/home",{user: user, courses: courses});
     });
 
 });
 
 app.get("/faculty/:course_id", async (req,res) => {
-    let user = sessionstorage.getItem("user");
-    let username = sessionstorage.getItem("username");
-    // let user = "Radhika N";
-    // let username = "n_radhika";
+    // let user = sessionstorage.getItem("user");
+    // let username = sessionstorage.getItem("username");
+    let user = "Radhika N";
+    let username = "n_radhika";
     // console.log(req.params.course_id);
     let sql = 'SELECT * FROM attendance WHERE course_id = "'+req.params.course_id+'";';
     let query = db.query(sql, (err,result) => {
@@ -236,36 +236,115 @@ app.get("/faculty/:course_id", async (req,res) => {
         var final = [];
         for(var i=0; i<result.length; i++){
             final.push({
-                url: "/faculty/"+req.params.course_id+"/"+result[0].slot+"/"+result[0].date_time.split(" ")[0],
+                url: "/faculty/"+req.params.course_id+"/"+result[i].slot+"/"+result[i].date_time.split(" ")[0],
                 date_time: result[i].date_time,
-                slot: result[i].slot
+                slot: result[i].slot.toString()
             });
         }
+        // console.log(final);
         res.render("faculty/attendances",{user: user, course_id: req.params.course_id, result: final});
     });
 });
 
 
 app.get("/faculty/:course_id/:slot/:date_time", (req,res) =>{
-    let user = sessionstorage.getItem("user");
-    let username = sessionstorage.getItem("username");
-    // let user = "Radhika N";
-    // let username = "n_radhika";
-    // console.log(req.params.course_id);
+    // let user = sessionstorage.getItem("user");
+    // let username = sessionstorage.getItem("username");
+    let user = "Radhika N";
+    let username = "n_radhika";
+    // console.log(req.params);
     let sql = 'SELECT student_attendance.roll_no, student_attendance.status FROM student_attendance, attendance WHERE  attendance.course_id = student_attendance.course_id and attendance.date_time = student_attendance.date_time and attendance.course_id = "'+req.params.course_id+'" and attendance.date_time REGEXP "'+req.params.date_time+' *" and attendance.slot = "'+req.params.slot+'";';
     let query = db.query(sql, (err,result) => {
         if(err) throw err;
         // console.log(result);
-        res.render("faculty/students",{user: user, course_id: req.params.course_id,date_time: req.params.date_time, slot: req.params.slot, result: result});
+        res.render("faculty/students",{url: "/faculty/"+req.params.course_id+"/"+req.params.slot+"/"+req.params.date_time, user: user, course_id: req.params.course_id,date_time: req.params.date_time, slot: req.params.slot, result: result});
+    });
+});
+
+app.post("/faculty/:course_id/:slot/:date_time", (req,res) =>{
+    // let user = sessionstorage.getItem("user");
+    // let username = sessionstorage.getItem("username");
+    let user = "Radhika N";
+    let username = "n_radhika";
+    // console.log(req.body);
+
+
+    let sql = 'SELECT student_attendance.roll_no, attendance.course_id, attendance.date_time FROM student_attendance, attendance WHERE  attendance.course_id = student_attendance.course_id and attendance.date_time = student_attendance.date_time and attendance.course_id = "'+req.params.course_id+'" and attendance.date_time REGEXP "'+req.params.date_time+' *" and attendance.slot = "'+req.params.slot+'";';
+    let query = db.query(sql, async (err,result) => {
+        if(err) throw err;
+        // console.log(result);
+        let count = 0;
+        for(var i = 0; i < result.length; i++){
+            let sql1 = 'UPDATE student_attendance SET status="'+req.body[result[i].roll_no]+'" WHERE roll_no="'+result[i].roll_no+'"and course_id="'+result[i].course_id+'" and date_time="'+result[i].date_time+'";';
+            let query1 = db.query(sql1, (err,res) => {
+                if(err) throw err;
+                // console.log(res);
+                count++;
+            });
+        }
+        while(count<result.length) await sleep(100);
+        res.redirect("/faculty/"+req.params.course_id+"/"+req.params.slot+"/"+req.params.date_time);
     });
 });
 
 
 
 // --------------------------------------Parent---------------------------------------------------------
-app.get('/parent', (req, res) => {
+app.get('/parent', async (req, res) => {
     let user = sessionstorage.getItem("user");
-    res.render("parent/home",{user: user});
+    let username = sessionstorage.getItem("username");
+    var courses = [];
+    var boo = true;
+    // ----
+    let sql = 'SELECT course.course_id, course.course_name, faculty.name FROM coursetostudent, course, faculty WHERE course.course_id = coursetostudent.course_id and course.faculty_id = faculty.faculty_id and coursetostudent.roll_no = "'+username+'"';
+    let query = db.query(sql, async (err, result) => {
+        if(err) throw err;
+        // console.log(result.length);
+        for(let i = 0; i < result.length; i++){
+            let sql1 = 'SELECT * FROM student_attendance WHERE roll_no = "'+username+'" and course_id = "'+result[i].course_id+'";';
+            let query1 = db.query(sql1, (err,res) => {
+                if(err) throw err;
+                // console.log(res);
+                let total = res.length;
+                let present = 0;
+                for(j in res){
+                    if(res[j].status == "Present") present++;
+                }
+                // console.log(result[i],i);
+                var obj = {
+                    course_id: result[i].course_id,
+                    course_name: result[i].course_name,
+                    name: result[i].name,
+                    total: total,
+                    percentage: total ? present/total*100 : 100
+                }
+                courses.push(obj);
+            });
+        }
+        while(courses.length < result.length) await sleep(100);
+        boo = false;
+    });
+    while(boo) await sleep(100);
+    // ----
+    var child = "";
+    sql = 'SELECT * FROM student WHERE roll_no = "'+username+'"';
+    query = db.query(sql, (err, result) => {
+            if(err) throw err;
+            console.log(result);
+            child = result[0].name;
+    });
+    while(child == "") await sleep(100);
+    sql = 'SELECT * FROM student_attendance WHERE roll_no = "'+username+'"';
+    query = db.query(sql, (err, result) => {
+        if(err) throw err;
+        // console.log(result);
+        var present = 0, absent = 0;
+        for(var i = 0; i < result.length; i++) {
+            if(result[i].status == "Present") present++;
+            if(result[i].status == "Absent") absent++;
+        }
+        res.render("parent/home",{user: user, child: child, present: present, absent: absent, courses: courses});
+    });
 });
 
 // --------------------------------------Admin----------------------------------------------------------
@@ -300,7 +379,7 @@ app.post('/login', (req, res) => {
         let sql = 'SELECT * FROM faculty WHERE faculty_id = "'+req.body.username+'" AND password = "'+req.body.password+'"';
         let query = db.query(sql, (err, result) => {
             if(err) throw err;
-            console.log(result);
+            // console.log(result);
             if (result.length != 0){
                 sessionstorage.setItem("user", result[0].name);
                 sessionstorage.setItem("username", result[0].faculty_id);
@@ -312,13 +391,13 @@ app.post('/login', (req, res) => {
         });
     }
     else if(user == "parent"){
-        let sql = 'SELECT * FROM student WHERE child_roll_no = "'+req.body.username+'" AND password = "'+req.body.password+'"';
+        let sql = 'SELECT * FROM parent WHERE child_roll_no = "'+req.body.username+'" AND password = "'+req.body.password+'"';
         let query = db.query(sql, (err, result) => {
             if(err) throw err;
             console.log(result);
             if (result.length != 0){
                 sessionstorage.setItem("user", result[0].name);
-                sessionstorage.setItem("username", result[0].roll_no);
+                sessionstorage.setItem("username", result[0].child_roll_no);
                 res.redirect("/parent");
             }
             else{
@@ -327,7 +406,7 @@ app.post('/login', (req, res) => {
         });
     }
     else{
-        let sql = 'SELECT * FROM student WHERE admin_id = "'+req.body.username+'" AND password = "'+req.body.password+'"';
+        let sql = 'SELECT * FROM admin WHERE admin_id = "'+req.body.username+'" AND password = "'+req.body.password+'"';
         let query = db.query(sql, (err, result) => {
             if(err) throw err;
             console.log(result);
