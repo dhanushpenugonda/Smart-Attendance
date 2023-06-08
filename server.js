@@ -38,6 +38,27 @@ function sleep(ms) {
     });
 }
 
+function getDistanceFromLatLon(lat1, lon1, lat2, lon2) {
+    lat1 = parseFloat(lat1);
+    lon1 = parseFloat(lon1);
+    lat2 = parseFloat(lat2);
+    lon2 = parseFloat(lon2);
+    var R = 6378.137; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c * 1000; // Distance in m
+    return d;
+}
+function deg2rad(deg) {
+    return deg * (Math.PI/180);
+}
+
 //  ----------------------------------SQL Connection---------------------------------------------------------
 
 const db  = mysql.createConnection({
@@ -145,11 +166,12 @@ app.get('/student', async (req, res) => {
 
 });
 
-app.get("/student/portal", async (req, res) => {
+app.post("/student/portal", async (req, res) => {
     let user = sessionstorage.getItem("user");
     let username = sessionstorage.getItem("username");
     var final = [];
     var boo = true;
+    console.log(req.body);
     let sql = 'SELECT * FROM student_attendance, attendance WHERE student_attendance.course_id = attendance.course_id and student_attendance.date_time = attendance.date_time and roll_no = "'+username+'";';
     let query = db.query(sql, (err, result) => {
         if(err) throw err;
@@ -162,7 +184,8 @@ app.get("/student/portal", async (req, res) => {
             //     console.log(date, time, result[i].exp_time);
             // }
             // console.log(currDate == date, currTime<time, result[i].status);
-            if (currDate == date && addMinutes(time,result[i].exp_time) > currTime && result[i].status != "Present") {
+            console.log(getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon));
+            if (currDate == date && addMinutes(time,result[i].exp_time) > currTime && result[i].status != "Present" && getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon) < 25) {
                 // console.log(date, addMinutes(time,result[i].exp_time), result[i].exp_time);
                 final.push({
                     url: "/student/portal/"+result[i].course_id+"/"+result[i].slot+"/"+result[i].date_time.split(" ")[0],
@@ -303,7 +326,6 @@ app.get('/faculty', (req, res) => {
 
         }
         while(courses.length < result.length) await sleep(100);
-        // console.log(courses);
         res.render("faculty/home",{user: user, courses: courses});
     });
 
@@ -313,7 +335,7 @@ app.post("/faculty/createattendance", async (req,res) => {
     console.log(req.body);
     var boo = true;
     let dateTime = date_time();
-    sql = 'INSERT INTO attendance(course_id, date_time, slot, exp_time) VALUES ("'+req.body.course_id+'","'+dateTime+'","'+req.body.slot+'","'+req.body.exp_time+'");';
+    sql = 'INSERT INTO attendance(course_id, date_time, slot, exp_time, lat, lon) VALUES ("'+req.body.course_id+'","'+dateTime+'","'+req.body.slot+'","'+req.body.exp_time+'","'+req.body.location.split(' ')[0]+'","'+req.body.location.split(' ')[1]+'");';
     query = db.query(sql, (err, result) => {
         if(err) throw err;
         console.log(result);
@@ -326,7 +348,7 @@ app.post("/faculty/createattendance", async (req,res) => {
         if(err) throw err;
         // console.log(result);
         for(i in result){
-            sql1 = "INSERT INTO student_attendance(roll_no, course_id, date_time, status) VALUES ('"+result[i].roll_no+"','"+req.body.course_id+"','"+dateTime+"','Present')";
+            sql1 = "INSERT INTO student_attendance(roll_no, course_id, date_time, status) VALUES ('"+result[i].roll_no+"','"+req.body.course_id+"','"+dateTime+"','Absent')";
             query1 = db.query(sql1, (err, result) => {
                 if(err) throw err;
                 // console.log(result);

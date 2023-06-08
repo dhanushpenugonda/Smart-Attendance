@@ -61,7 +61,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="slot" class="form-label">Slot</label>
-                            <input type="number" name = "slot" class="form-control" id="slot">
+                            <input type="number" min="1" max="8" name = "slot" class="form-control" id="slot">
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="exp_time" class="form-label" >Exp time</label>
@@ -71,6 +71,7 @@
                                 <option value="10">20</option>
                             </select>
                         </div>
+                        <input type="text" name="location" id="location" style="display:none">
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure, you want to create the link?');">Submit</button>
                         </div>
@@ -127,5 +128,17 @@
         </div>
     </section>
     <%- include('footer') %>
+
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else { 
+            document.getElementById("location").value = "Error";
+        }
+
+        function showPosition(position) {
+            document.getElementById("location").value = position.coords.latitude + " " + position.coords.longitude;
+        }
+    </script>
 </body>
 </html>
