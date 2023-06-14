@@ -33,12 +33,34 @@
             section{
                 padding: 2rem 0;
             }
+
         </style>
     </head>
     
     <body id="page-top">
         <%- include('header', {user: user}); %>
-
+        <% if (message) { %>
+            <div class="alert alert-success justify-content-center position-fixed w-100" role="alert">
+                <div class="text-center">
+                    <%= message %>
+                </div>
+            </div>
+            
+            <script>
+                window.setTimeout(function() {
+                    var alertElement = document.querySelectorAll('.alert')[0];
+                    alertElement.style.transition = 'opacity 0.5s linear';
+                    alertElement.style.opacity = '0';
+                    setTimeout(function() {
+                        alertElement.style.transition = 'height 0.5s ease-in-out';
+                        alertElement.style.height = '0';
+                        setTimeout(function() {
+                            alertElement.parentNode.removeChild(alertElement);
+                        }, 1000);
+                    }, 1000);
+                }, 2000);
+            </script>
+        <% } %>
         <div class="container-fluid p-0 mb-5">
             <img class="w-100" src="https://assets.telegraphindia.com/telegraph/2023/Jan/1674204821_main-tt.jpg" alt="Image">
             <div class="carousel-caption d-flex align-items-center" style="margin: 0 0 -10em;">
@@ -92,7 +114,7 @@
                         <!-- <p class="lead fw-normal text-muted mb-5 mb-lg-0">enter any thing</p> -->
                     </div>
                     <div class="col-sm-8 col-md-6">
-                        <form class="row g-3">
+                        <form class="row g-3" action="/student/od" method="POST">
                             <div class="col-12">
                                 <label for="course" class="form-label">Course ID</label>
                                 <select class="form-select" name="course" id="cars">
@@ -103,15 +125,15 @@
                             </div>
                             <div class="col-12">
                                 <label for="reason" class="form-label">Reason</label>
-                                <input type="text" class="form-control" name="reason" id="reason">
+                                <input type="text" class="form-control" name="reason" id="reason" required>
                             </div>
                             <div class="col-12">
                                 <label for="date" class="form-label">Date</label>
-                                <input type="date" class="form-control" name="date" id="date">
+                                <input type="date" class="form-control" name="date" id="date" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="slot" class="form-label">Slot</label>
-                                <input type="number" class="form-control" name="slot" id="slot">
+                                <input type="number" class="form-control" name="slot" id="slot" required>
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Submit</button>

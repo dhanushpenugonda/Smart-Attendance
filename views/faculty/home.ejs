@@ -31,6 +31,28 @@
     
 <body id="page-top">
     <%- include('header', {user: user}) %>
+    <% if (message) { %>
+        <div class="alert alert-success justify-content-center position-fixed w-100" role="alert">
+            <div class="text-center">
+                <%= message %>
+            </div>
+        </div>
+        
+        <script>
+            window.setTimeout(function() {
+                var alertElement = document.querySelectorAll('.alert')[0];
+                alertElement.style.transition = 'opacity 0.5s linear';
+                alertElement.style.opacity = '0';
+                setTimeout(function() {
+                    alertElement.style.transition = 'height 0.5s ease-in-out';
+                    alertElement.style.height = '0';
+                    setTimeout(function() {
+                        alertElement.parentNode.removeChild(alertElement);
+                    }, 1000);
+                }, 1000);
+            }, 2000);
+        </script>
+    <% } %>
     <div class="container-fluid p-0 mb-5">
         <img class="w-100" src="https://assets.telegraphindia.com/telegraph/2023/Jan/1674204821_main-tt.jpg" alt="Image">
         <div class="carousel-caption d-flex align-items-center" style="margin: 0 0 -8em;">
@@ -44,7 +66,7 @@
         <div class="container px-5">
             <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between">
                 <div class="col-12 col-lg-5">
-                    <h2 class="display-4 lh-1 mb-4">Create Attandance Portal</h2>
+                    <h2 class="display-4 lh-1 mb-4">Create Attendance Portal</h2>
                     <p class="lead fw-normal text-muted mb-5 mb-lg-0">Fill the details</p>
                 </div>
                 <div class="col-sm-8 col-md-6">
@@ -57,7 +79,6 @@
                                     <option value=<%= courses[i].course_id %>><%= courses[i].course_id %></option>
                                 <% } %>
                                 </select>
-                            
                         </div>
                         <div class="col-md-6">
                             <label for="slot" class="form-label">Slot</label>
@@ -98,7 +119,6 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                        <th scope="col">Name</th>
                         <th scope="col">Roll Number</th>
                         <th scope="col">Course ID</th>
                         <th scope="col">Reason</th>
@@ -108,20 +128,23 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <% for( let i = 0; i < ods.length; i++ ) { %>
                         <tr>
-                            <td scope="col">Ajay</td>
-                            <td scope="col">CB.EN.U4CSE20203</td>
-                            <td scope="col">19313</td>
-                            <td scope="col">Medical</td>
-                            <td scope="col">19/3/2202</td>
-                            <td scope="col">4</td>
+                            <td scope="col"><%= ods[i].roll_no %></td>
+                            <td scope="col"><%= ods[i].course_id %></td>
+                            <td scope="col"><%= ods[i].reason %></td>
+                            <td scope="col"><%= ods[i].date %></td>
+                            <td scope="col"><%= ods[i].slot %></td>
                             <td scope="col">
                                 <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                                <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                                <form action=<%= ods[i].url %> method="POST">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onchange="this.form.submit()">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                                </form>
                                 </div>
                             </td>
                         </tr>
+                    <% } %>
                     </tbody>
                 </table>
             </div>
