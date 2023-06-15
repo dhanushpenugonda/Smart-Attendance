@@ -5,6 +5,19 @@ const app = express();
 const sessionstorage = require('sessionstorage');
 const mysql = require('mysql');
 
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: "testqwerty433@gmail.com",
+        pass: "pmrvufjatfkosiwt"
+    }
+});
+
+
+
+
 //  -----------------------------Date and Time operations--------------------------------------------------------
 function date_time(){
     var date_ob = new Date();
@@ -194,6 +207,154 @@ app.get('/logout', requireLogin, (req, res) => {
     return res.redirect("/student");
 });
 
+app.get('/forgot', (req, res) => {
+    res.render("forgot", {message: ""});
+});
+
+app.post('/forgot', async (req, res) => {
+    sessionstorage.setItem("username", req.body.username);
+    sessionstorage.setItem("role", req.body.role);
+    if(req.body.role == "Student"){
+        let sql = "SELECT * FROM student WHERE roll_no = '"+req.body.username+"';";
+        let query = db.query(sql, (err, result) => {
+            if(err) throw err;
+            if(result.length == 0){
+                return res.render("forgot", {message: "Invalid Username"});
+            }
+        });
+    }
+    else if(req.body.role == "Faculty"){
+        let sql = "SELECT * FROM faculty WHERE faculty_id = '"+req.body.username+"';";
+        let query = db.query(sql, (err, result) => {
+            if(err) throw err;
+            if(result.length == 0){
+                return res.render("forgot", {message: "Invalid Username"});
+            }
+        });
+    }
+    else{
+        let sql = "SELECT * FROM parent WHERE child_roll_no = '"+req.body.username+"';";
+        let query = db.query(sql, (err, result) => {
+            if(err) throw err;
+            if(result.length == 0){
+                return res.render("forgot", {message: "Invalid Username"});
+            }
+        });
+    }
+    var email;
+    if(req.body.role == "Faculty"){
+        email = req.body.username.toLowerCase() + "@cb.amrita.edu";
+    }
+    else{
+        email = req.body.username.toLowerCase() + "@cb.students.amrita.edu";
+    }
+    console.log(email);
+    sessionstorage.setItem("email", email);
+    let otp = Math.random();
+    otp = otp * 10000;
+    otp = parseInt(otp);
+    // console.log(otp);
+    sessionstorage.setItem("otp", otp.toString());
+    const mailOptions = {
+        from: "testqwerty433@gmail.com",
+        to: email,
+        subject: "OTP for your reset password request",
+        html: '<h3>Your OTP to reset the password is </h3>' + '<h1>'+ otp +'</h1>'
+    };
+    var boo = true;
+    transporter.sendMail(mailOptions, function(err, info){
+        if(err) throw err;
+        else{
+            console.log("Email sent: " + info.response);
+            boo = false;
+        }
+    });
+    while(boo) await sleep(100);
+    res.redirect('/otp');
+});
+
+app.get('/resend', async (req, res) => {
+    sessionstorage.setItem("email", email);
+    let otp = Math.random();
+    otp = otp * 10000;
+    otp = parseInt(otp);
+    sessionstorage.setItem("otp", otp);
+    const mailOptions = {
+        from: "testqwerty433@gmail.com",
+        to: email,
+        subject: "OTP for your reset password request",
+        html: '<h3>OTP for verification is </h3>' + '<h1>'+ otp +'</h1>'
+    };
+    var boo = true;
+    transporter.sendMail(mailOptions, function(err, info){
+        if(err) throw err;
+        else{
+            console.log("Email sent: " + info.response);
+            boo = false;
+        }
+    });
+    while(boo) await sleep(100);
+    res.redirect('/otp');
+});
+
+app.get('/otp', (req, res) => {
+    res.render("otp", {message: "OTP has been sent to "+sessionstorage.getItem("email")});
+});
+
+
+app.post('/otp', (req, res) => {
+    if(req.body.otp == sessionstorage.getItem("otp")){
+        sessionstorage.removeItem("otp");
+        sessionstorage.removeItem("email");
+        res.render("reset", {message: ""});
+    }
+    else{
+        res.render("otp",{message: "Invalid OTP"});
+    }
+});
+
+app.get('/reset', (req, res) => {
+    res.render("reset", {message: ""});
+});
+
+app.post('/reset', (req, res) => {
+    if(req.body.password == req.body['re-password']){
+        if(sessionstorage.getItem("role") == "Student"){
+            let sql = "UPDATE student SET password = '"+req.body.password+"' WHERE roll_no = '"+sessionstorage.getItem("username")+"';";
+            let query = db.query(sql, (err, result) => {
+                if(err) throw err;
+                // console.log(result);
+                sessionstorage.removeItem("username");
+                sessionstorage.removeItem("role");
+                res.redirect("/");
+            });
+        }
+        else if(sessionstorage.getItem("role") == "Faculty"){
+            let sql = "UPDATE faculty SET password = '"+req.body.password+"' WHERE faculty_id = '"+sessionstorage.getItem("username")+"';";
+            let query = db.query(sql, (err, result) => {
+                if(err) throw err;
+                // console.log(result);
+                sessionstorage.removeItem("username");
+                sessionstorage.removeItem("role");
+                res.redirect("/");
+            });
+        }
+        else{
+            let sql = "UPDATE parent SET password = '"+req.body.password+"' WHERE child_roll_no = '"+sessionstorage.getItem("username")+"';";
+            let query = db.query(sql, (err, result) => {
+                if(err) throw err;
+                // console.log(result);
+                sessionstorage.removeItem("username");
+                sessionstorage.removeItem("role");
+                res.redirect("/");
+            });
+        }
+    }
+    else{
+        res.render("reset", {message: "Passwords don't match"});
+    }
+});
+
 // app.get('/*', (req, res) => {
 //     // if(req.url == "/") return res.redirect('/');
 //     if(sessionstorage.length == 0) {
@@ -248,7 +409,7 @@ app.post("/student/portal", async (req, res) => {
             // }
             // console.log(currDate == date, currTime<time, result[i].status);
             // console.log(getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon));
-            if (currDate == date && addMinutes(time,result[i].exp_time) > currTime && result[i].status != "Present" && getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon) < 25) {
+            if (currDate == date && addMinutes(time,result[i].exp_time) > currTime && result[i].status != "Present" && getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon) < 10) {
                 // console.log(date, addMinutes(time,result[i].exp_time), result[i].exp_time);
                 final.push({
                     url: "/student/portal/"+result[i].course_id+"/"+result[i].slot+"/"+result[i].date_time.split(" ")[0],
