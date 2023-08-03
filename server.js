@@ -83,10 +83,10 @@ function deg2rad(deg) {
 //  ----------------------------------SQL Connection---------------------------------------------------------
 
 const db  = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password : '',
-    database : 'smartattendance'
+    host : 'sql6.freesqldatabase.com',
+    user : 'sql6637004',
+    password : 'hJKCTwiyFf',
+    database : 'sql6637004'
 });
 db.connect((err) => {
     if(err) throw err;
@@ -408,7 +408,7 @@ app.post("/student/portal", async (req, res) => {
             //     console.log(date, time, result[i].exp_time);
             // }
             // console.log(currDate == date, currTime<time, result[i].status);
-            // console.log(getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon));
+            console.log(getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon));
             if (currDate == date && addMinutes(time,result[i].exp_time) > currTime && result[i].status != "Present" && getDistanceFromLatLon(req.body.location.split(" ")[0], req.body.location.split(" ")[1], result[i].lat, result[i].lon) < 10) {
                 // console.log(date, addMinutes(time,result[i].exp_time), result[i].exp_time);
                 final.push({
@@ -753,7 +753,7 @@ app.get('/parent', requireLogin, async (req, res) => {
     sql = 'SELECT * FROM student WHERE roll_no = "'+username+'"';
     query = db.query(sql, (err, result) => {
             if(err) throw err;
-            // console.log(result);
+            console.log(result);
             child = result[0].name;
     });
     while(child == "") await sleep(100);
